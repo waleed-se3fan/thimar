@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:salla_thumara/core/component/shimmer.dart';
 import 'package:salla_thumara/features/home_page/bloc.dart';
 
 class CustomAnimatedImages extends StatefulWidget {
@@ -70,22 +71,15 @@ class CustomAnimatedImagesState extends State<CustomAnimatedImages> {
                     scrollDirection: Axis.horizontal,
                     itemCount: 4,
                     itemBuilder: (c, i) {
-                      return state is LoadingImagesState
-                          ? const Center(child: CircularProgressIndicator())
-                          : state is SuccesLoadingImages
-                              ? Container(
-                                  padding: EdgeInsets.only(top: 25.h),
-                                  child: Image.network(
-                                    state.images![i].image,
-                                    fit: BoxFit.fill,
-                                  ),
-                                )
-                              : state is FailLoadingImages
-                                  ? const Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : const Center(
-                                      child: CircularProgressIndicator());
+                      return state is SuccesLoadingImages
+                          ? Container(
+                              padding: EdgeInsets.only(top: 25.h),
+                              child: Image.network(
+                                state.images![i].image,
+                                fit: BoxFit.fill,
+                              ),
+                            )
+                          : const AnimatedImagesShimmer();
                     }),
                 Container(
                   height: 20.h,

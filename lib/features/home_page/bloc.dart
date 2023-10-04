@@ -27,7 +27,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 /* get Home Page Images */
 
-  Future<List> getHomePageImages(
+  getHomePageImages(
       GetSliderImagesEvent event, Emitter<HomePageState> emit) async {
     emit(LoadingImagesState());
     try {
@@ -38,11 +38,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           data.map((e) => SliderModel.fromJson(e)).toList();
 
       emit(SuccesLoadingImages(slider));
-      return slider;
     } on DioException {
       emit(FailLoadingImages('fail'));
-
-      return [];
     }
   }
 
