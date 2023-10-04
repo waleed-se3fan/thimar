@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.51" height="19.51" viewBox="0 0 19.51 19.51">
+  <g id="COCO_Duotone_Info" data-name="COCO/Duotone/Info" transform="translate(-2.245 -2.245)">
+    <path id="Vector" d="M.353,5.95a7.511,7.511,0,0,1,5.6-5.6,13.354,13.354,0,0,1,6.1,0,7.511,7.511,0,0,1,5.6,5.6,13.354,13.354,0,0,1,0,6.1,7.511,7.511,0,0,1-5.6,5.6,13.354,13.354,0,0,1-6.1,0,7.511,7.511,0,0,1-5.6-5.6A13.354,13.354,0,0,1,.353,5.95Z" transform="translate(3 3)" fill="rgba(76,134,19,0.15)" stroke="#4c8613" stroke-width="1.5"/>
+    <path id="Vector-2" data-name="Vector" d="M0,4V0" transform="translate(12 11.5)" fill="rgba(76,134,19,0.15)" stroke="#4c8613" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <g id="Vector-3" data-name="Vector" transform="translate(11 8)" fill="rgba(76,134,19,0.15)" stroke="#4c8613" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+      <circle cx="1" cy="1" r="1" stroke="none"/>
+      <circle cx="1" cy="1" r="0.5" fill="none"/>
+    </g>
+  </g>
+</svg>

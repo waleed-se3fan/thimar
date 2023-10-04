@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.51" height="19.51" viewBox="0 0 19.51 19.51">
+  <g id="COCO_Duotone_Info" data-name="COCO/Duotone/Info" transform="translate(-2.745 -2.245)">
+    <path id="Vector" d="M.353,5.95a7.511,7.511,0,0,1,5.6-5.6,13.354,13.354,0,0,1,6.1,0,7.511,7.511,0,0,1,5.6,5.6,13.354,13.354,0,0,1,0,6.1,7.511,7.511,0,0,1-5.6,5.6,13.354,13.354,0,0,1-6.1,0,7.511,7.511,0,0,1-5.6-5.6A13.354,13.354,0,0,1,.353,5.95Z" transform="translate(3.5 3)" fill="rgba(76,134,19,0.15)" stroke="#4c8613" stroke-width="1.5"/>
+    <path id="Icon_awesome-share-alt" data-name="Icon awesome-share-alt" d="M5.18,4.709a1.407,1.407,0,0,0-.88.308L2.792,4.074a1.421,1.421,0,0,0,0-.613L4.3,2.518a1.41,1.41,0,1,0-.5-.8l-1.508.943a1.413,1.413,0,1,0,0,2.211L3.8,5.815A1.413,1.413,0,1,0,5.18,4.709Z" transform="translate(9 7.942)" fill="#44853e"/>
+  </g>
+</svg>

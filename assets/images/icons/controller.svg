@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="58" height="58" viewBox="0 0 58 58">
+  <defs>
+    <filter id="Rectangle_3463" x="0" y="0" width="58" height="58" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_17452" data-name="Group 17452" transform="translate(-16 -96)">
+    <g transform="matrix(1, 0, 0, 1, 16, 96)" filter="url(#Rectangle_3463)">
+      <rect id="Rectangle_3463-2" data-name="Rectangle 3463" width="40" height="40" rx="11" transform="translate(9 6)" fill="#4c8613"/>
+    </g>
+    <g id="COCO_Line_Setting" data-name="COCO/Line/Setting" transform="translate(32 109)">
+      <path id="Vector" d="M15.413,15.867A2.667,2.667,0,1,1,12.747,13.2,2.667,2.667,0,0,1,15.413,15.867Z" transform="translate(4.12 4.467)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+      <path id="Vector-2" data-name="Vector" d="M7.013,9.267A2.667,2.667,0,1,1,4.347,6.6,2.667,2.667,0,0,1,7.013,9.267Z" transform="translate(3.187 3.733)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+      <path id="Vector-3" data-name="Vector" d="M15.413,2.667A2.667,2.667,0,1,1,12.747,0,2.667,2.667,0,0,1,15.413,2.667Z" transform="translate(4.12 3)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+      <path id="Vector-4" data-name="Vector" d="M17.2,16.98H20M1.867,9.717,0,9.765m7.966,0H20M10.89,2.551H0m20,0H17.2M0,16.98H10.89" transform="translate(3 3.283)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

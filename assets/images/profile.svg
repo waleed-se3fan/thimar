@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18.5" height="22.5" viewBox="0 0 18.5 22.5">
+  <g id="COCO_Line_User" data-name="COCO/Line/User" transform="translate(0.75 0.75)">
+    <path id="Vector" d="M0,17.23A5.924,5.924,0,0,1,4.862,11.32l.252-.042a20.729,20.729,0,0,1,6.771,0l.252.042A5.924,5.924,0,0,1,17,17.23a2.262,2.262,0,0,1-2.22,2.3H2.22A2.262,2.262,0,0,1,0,17.23Z" transform="translate(0 1.469)" fill="none" stroke="#aed489" stroke-width="1.5"/>
+    <path id="Vector-2" data-name="Vector" d="M12.807,4.8A4.874,4.874,0,0,1,7.862,9.6,4.874,4.874,0,0,1,2.917,4.8,4.874,4.874,0,0,1,7.862,0,4.874,4.874,0,0,1,12.807,4.8Z" transform="translate(0.638)" fill="none" stroke="#aed489" stroke-width="1.5"/>
+  </g>
+</svg>
