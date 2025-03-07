@@ -12,7 +12,7 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'عن التطبيق'),
+      appBar: const CustomAppBar(title: 'عن التطبيق'),
       body: BlocProvider(
           create: (context) => AccountBloc()..add(GetAboutAppEvent()),
           child: BlocBuilder<AccountBloc, AccountState>(

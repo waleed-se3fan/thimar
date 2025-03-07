@@ -9,7 +9,7 @@ class TermsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'الشروط والاحكام'),
+      appBar: const CustomAppBar(title: 'الشروط والاحكام'),
       body: BlocProvider(
         create: (BuildContext context) => AccountBloc()..add(GetTermsEvent()),
         child: BlocConsumer<AccountBloc, AccountState>(

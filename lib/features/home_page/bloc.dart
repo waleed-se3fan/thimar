@@ -5,6 +5,7 @@ import 'package:salla_thumara/data/catigories.dart';
 import 'package:salla_thumara/data/product_rate.dart';
 import 'package:salla_thumara/data/section.dart';
 import 'package:salla_thumara/data/slider.dart';
+import 'package:salla_thumara/features/login/bloc.dart';
 
 part 'events.dart';
 part 'states.dart';
@@ -18,6 +19,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<GetProductRateEvent>(getProductRate);
     on<GetSectionDetailsEvent>(getSectionDetails);
     on<SearchEvent>(search);
+    on<ChangeRangeSliderEvent>(rangeSlider);
+    on<CheckBoxEvent>(checkFunction);
+    on<FilterDataEvent>(filterData);
   }
 
   int index = 0;
@@ -72,10 +76,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     emit(LoadingGetAllCategories());
     try {
       var response1 = await Dio().get('${ApiClass.baseApi}products',
-          options: Options(headers: {
-            'Authorization':
-                'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-          }));
+          options:
+              Options(headers: {'Authorization': 'Bearer ${LoginBloc.token}'}));
 
       List data1 = response1.data['data'];
 
@@ -108,6 +110,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       return list1!;
     } on DioException catch (e) {
+      e.error;
       emit(FailGetAllSectionDetailsState());
       return [];
     }
@@ -120,12 +123,15 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       var response = await Dio().get(
           '${ApiClass.baseApi}products/${list1![event.index].id.toString()}/rates');
+      if (response.data['data'] == null) {
+        emit(FailProductRateState());
+      } else {
+        List data = response.data['data'];
+        productRates = data.map((e) => ProductRate.fromJson(e)).toList();
 
-      List data = response.data['data'];
-
-      productRates = data.map((e) => ProductRate.fromJson(e)).toList();
-      //print(productRates!.length.toString());
-      emit(SuccessProductRateState(productRates!));
+        //print(productRates!.length.toString());
+        emit(SuccessProductRateState(productRates!));
+      }
     } on DioException catch (e) {
       emit(FailProductRateState());
       return e;
@@ -143,6 +149,44 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       emit(SuccessSearchState(searchData!));
     } else {
       emit(FailSearchState());
+    }
+  }
+
+//section functions
+  static double min = 0;
+  static double max = 50;
+  rangeSlider(ChangeRangeSliderEvent event, Emitter<HomePageState> emit) {
+    min = event.start;
+    max = event.end;
+    print('min$min');
+    print('max$max');
+    emit(ChangeRangeSliderState(min, max));
+  }
+
+  static bool check = false;
+  static String checkString = 'asc';
+  checkFunction(CheckBoxEvent event, Emitter<HomePageState> emit) {
+    check = event.check;
+    check ? checkString = 'asc' : checkString = 'desc';
+    print(checkString);
+    emit(CheckBoxState(check));
+  }
+
+  List<Category>? filterList;
+  filterData(FilterDataEvent event, Emitter<HomePageState> emit) async {
+    emit(LoadingFilterData());
+    try {
+      var response = await Dio().get(
+          'https://thimar.amr.aait-d.com/public/api/products?filter=${checkString}&category_id=${event.index}&min_price=${min}&max_price=${max}');
+      List data = response.data['data'];
+
+      filterList = data.map((e) => Category.fromJson(e)).toList();
+
+      emit(SuccessFilterData(filterList!));
+      print(filterList.toString());
+    } on DioException catch (e) {
+      e.error;
+      emit(FailFilterData());
     }
   }
 }

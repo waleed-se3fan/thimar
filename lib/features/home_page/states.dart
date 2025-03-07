@@ -60,3 +60,23 @@ class SuccessSearchState extends HomePageState {
 }
 
 class FailSearchState extends HomePageState {}
+
+class ChangeRangeSliderState extends HomePageState {
+  double start;
+  double end;
+  ChangeRangeSliderState(this.start, this.end);
+}
+
+class CheckBoxState extends HomePageState {
+  bool check;
+  CheckBoxState(this.check);
+}
+
+class LoadingFilterData extends HomePageState {}
+
+class SuccessFilterData extends HomePageState {
+  List<Category> allCategories;
+  SuccessFilterData(this.allCategories);
+}
+
+class FailFilterData extends HomePageState {}

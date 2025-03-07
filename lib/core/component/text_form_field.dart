@@ -56,7 +56,7 @@ class _CustomTextFeildWithPerfixState extends State<CustomTextFeild> {
           isDense: true,
           icon: widget.isPhoneNumber
               ? Container(
-                  padding:  EdgeInsets.all(10.r),
+                  padding: EdgeInsets.all(10.r),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.r),
                       border: Border.all(
@@ -90,7 +90,7 @@ class _CustomTextFeildWithPerfixState extends State<CustomTextFeild> {
                       : const Icon(Icons.visibility_off_outlined))
               : null,
           alignLabelWithHint: false,
-          prefixIconConstraints:  BoxConstraints(
+          prefixIconConstraints: BoxConstraints(
             maxHeight: 33.h,
             maxWidth: 35.w,
           ),

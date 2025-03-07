@@ -34,6 +34,8 @@ class LoginScreen extends StatelessWidget {
               content: Text(state.message.toString())));
           final sharedPref = await SharedPreferences.getInstance();
           sharedPref.setBool('islogin', true);
+          LoginBloc.getData();
+
           navigateTo(BottomNavBar());
         }
       },

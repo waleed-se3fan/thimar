@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:salla_thumara/features/login/bloc.dart';
 part 'events.dart';
 part 'states.dart';
 
@@ -14,8 +14,10 @@ class GoogleMapBloc extends Bloc<GoogleMapEvent, GoogleMapState> {
     on<AddNewLocationEvent>(addNewLocation);
     on<UpdateLocationEvent>(updateAddress);
     on<ChangeTypeEvent>(changeType);
+    on<ChangeMainAddressEvent>(changeMainAddress);
     on<GetLocationEvent>(getLocation);
     on<GetEditLocationEvent>(getEditLocation);
+    on<EditMainAddressEvent>(editMainAddress);
   }
 
   //double? editLat;
@@ -52,12 +54,17 @@ class GoogleMapBloc extends Bloc<GoogleMapEvent, GoogleMapState> {
         Position location = await Geolocator.getCurrentPosition();
         latit = location.latitude;
         long = location.longitude;
-
         List<Placemark> x = await GeocodingPlatform.instance
             .placemarkFromCoordinates(latit!, long!);
-
         streatName = '${x[0].locality} _ ${x[0].subAdministrativeArea}';
         print('=--=-=-=-=-=-=  $latit   $long    $streatName');
+
+        // List<Addresses> lo = AddressesBloc.myAddresses!
+        //     .where((element) => element.isDefault.toString().contains('true'))
+        //     .toList();
+
+        // print(lo[0].location);
+
         emit(SuccessGoogleMapState(latit!, long!, streatName!));
       } catch (e) {
         emit(FailGoogleMapState());
@@ -77,6 +84,7 @@ class GoogleMapBloc extends Bloc<GoogleMapEvent, GoogleMapState> {
 
       emit(SuccessGetLocation(latit!, long!, streatName!));
     } on DioException catch (e) {
+      e.error;
       emit(FailGetLocation());
     }
   }
@@ -94,6 +102,7 @@ class GoogleMapBloc extends Bloc<GoogleMapEvent, GoogleMapState> {
 
       emit(SuccessGetEditLocation(latit!, long!, streatName!));
     } on DioException catch (e) {
+      e.error;
       emit(FailGetEditLocation());
     }
   }
@@ -107,24 +116,27 @@ class GoogleMapBloc extends Bloc<GoogleMapEvent, GoogleMapState> {
         emit(FailAddnewLocationState('رقم الجوال مطلوب'));
       } else if (event.description == '') {
         emit(FailAddnewLocationState('الوصف مطلوب'));
+        // ignore: unnecessary_null_comparison
       } else if (event.location == null) {
         emit(FailAddnewLocationState('الموقع علي الخريطة مطلوب'));
       } else {
-        var response = await Dio()
-            .post('https://thimar.amr.aait-d.com/public/api/client/addresses',
-                options: Options(headers: {
-                  'Authorization':
-                      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-                }),
-                data: {
+        var response = await Dio().post(
+            'https://thimar.amr.aait-d.com/public/api/client/addresses',
+            options: Options(
+                headers: {'Authorization': 'Bearer ${LoginBloc.token}'}),
+            data: {
               'type': event.type,
               'phone': event.phone,
               'description': event.description,
               'location': event.location,
               'lat': event.latit,
               'lng': event.long,
-              'is_default': '1',
+              'is_default': event.mainLocation ? '0' : '1',
             });
+
+        List<Placemark> x = await GeocodingPlatform.instance
+            .placemarkFromCoordinates(event.latit, event.long);
+        streatName = '${x[0].locality} _ ${x[0].subAdministrativeArea}';
         print('ssssssssssssssssssssssssssssssssssssssssss');
         emit(SuccessAddnewLocationState(response.data['message']));
       }
@@ -142,8 +154,10 @@ class GoogleMapBloc extends Bloc<GoogleMapEvent, GoogleMapState> {
 
   Future updateAddress(
       UpdateLocationEvent event, Emitter<GoogleMapState> emit) async {
+    emit(LoadingEditLocationState());
+    print('iiiiiiiiiiiiiiiiiiiiiiiii');
     try {
-      await Dio().put(
+      var response = await Dio().put(
           'https://thimar.amr.aait-d.com/public/api/client/addresses/${event.id}',
           data: {
             'type': event.type,
@@ -151,15 +165,35 @@ class GoogleMapBloc extends Bloc<GoogleMapEvent, GoogleMapState> {
             'lat': event.lat,
             'location': event.location,
             'description': event.description,
-            'phone': event.phone
+            'phone': event.phone,
+            'is_default': event.mainLocation ? '0' : '1',
           },
-          options: Options(headers: {
-            'Authorization':
-                'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-          }));
+          options:
+              Options(headers: {'Authorization': 'Bearer ${LoginBloc.token}'}));
+
+      List<Placemark> x = await GeocodingPlatform.instance
+          .placemarkFromCoordinates(event.lat, event.lat);
+      streatName = '${x[0].locality} _ ${x[0].subAdministrativeArea}';
+      emit(SuccessEditLocationState(response.data['message']));
+      print('sssssssssssssssssssssssss');
     } on DioException catch (e) {
       e.error;
-      print('fffffffffffffffffffffffffffffffffffffffffffffff');
+      emit(FailEditLocationState(e.response!.data['message'].toString()));
+
+      print('fffffffffffffffffffffffff');
     }
+  }
+
+  bool mainAddress = false;
+  changeMainAddress(
+      ChangeMainAddressEvent event, Emitter<GoogleMapState> emit) {
+    mainAddress = event.check;
+    emit(SuccessChangeMainAddressState(mainAddress));
+  }
+
+  bool editAddress = false;
+  editMainAddress(EditMainAddressEvent event, Emitter<GoogleMapState> emit) {
+    editAddress = event.check;
+    emit(SuccessEditMainAddressState(editAddress));
   }
 }

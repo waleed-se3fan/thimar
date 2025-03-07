@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,11 +10,15 @@ import 'package:salla_thumara/features/cart/bloc.dart';
 import 'package:salla_thumara/features/favourite/bloc.dart';
 import 'package:salla_thumara/features/google_map/bloc.dart';
 import 'package:salla_thumara/features/login/bloc.dart';
+import 'package:salla_thumara/features/order/bloc.dart';
 import 'package:salla_thumara/features/register/bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salla_thumara/views/auth/splash.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'core/utilities/navigation.dart';
 import 'features/home_page/bloc.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -38,7 +44,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AccountBloc()),
         BlocProvider(
             create: (context) => GoogleMapBloc()..add(GetGoogleMapEvent())),
-        BlocProvider(create: (context) => AddressesBloc())
+        BlocProvider(create: (context) => AddressesBloc()),
+        BlocProvider(create: (context) => OrderBloc()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690),

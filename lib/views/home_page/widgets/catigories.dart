@@ -30,7 +30,7 @@ class Categories extends StatelessWidget {
                   ? GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
-                      itemCount: 7,
+                      itemCount: state.allCategories.length,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisSpacing: 30,

@@ -131,11 +131,7 @@ class _HomePageState extends State<HomePage> {
                 CheckUserConnection();
               },
               child: const Text("Check")),
-          ElevatedButton(
-              onPressed: () async {
-                var result = await InternetAddress.lookup('google.com');
-              },
-              child: const Text('Enter'))
+          ElevatedButton(onPressed: () async {}, child: const Text('Enter'))
         ],
       ),
     );

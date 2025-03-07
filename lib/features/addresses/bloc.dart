@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:salla_thumara/data/addresses.dart';
+import 'package:salla_thumara/features/login/bloc.dart';
 
 part 'events.dart';
 part 'states.dart';
@@ -22,10 +23,8 @@ class AddressesBloc extends Bloc<AddressesEvent, AddressesState> {
     try {
       await Dio()
           .get('https://thimar.amr.aait-d.com/public/api/client/addresses',
-              options: Options(headers: {
-                'Authorization':
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-              }))
+              options: Options(
+                  headers: {'Authorization': 'Bearer ${LoginBloc.token}'}))
           .then((value) {
         if (value.data['data'] == null) {
           emit(EmptyAddressesState());
@@ -46,10 +45,8 @@ class AddressesBloc extends Bloc<AddressesEvent, AddressesState> {
   void delete(int id) {
     Dio()
         .delete('https://thimar.amr.aait-d.com/public/api/client/addresses/$id',
-            options: Options(headers: {
-              'Authorization':
-                  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-            }))
+            options: Options(
+                headers: {'Authorization': 'Bearer ${LoginBloc.token}'}))
         .then((value) {
       myAddresses?.removeAt(id);
     });
@@ -65,10 +62,8 @@ class AddressesBloc extends Bloc<AddressesEvent, AddressesState> {
       await Dio()
           .delete(
               'https://thimar.amr.aait-d.com/public/api/client/addresses/${myAddresses![event.index].id}',
-              options: Options(headers: {
-                'Authorization':
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-              }))
+              options: Options(
+                  headers: {'Authorization': 'Bearer ${LoginBloc.token}'}))
           .then((value) {
         myAddresses?.removeAt(event.index);
       });

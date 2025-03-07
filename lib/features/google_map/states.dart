@@ -59,20 +59,24 @@ class FailGetEditLocation extends GoogleMapState {}
 
 class ChangeTypeState extends GoogleMapState {}
 
-class LoginState {
-  final String emailAddress;
-  final String password;
+class SuccessChangeMainAddressState extends GoogleMapState {
+  final bool check;
+  SuccessChangeMainAddressState(this.check);
+}
 
-  LoginState({
-    emailAddress,
-    password,
-  })  : emailAddress = '',
-        password = '';
+class SuccessEditMainAddressState extends GoogleMapState {
+  final bool check;
+  SuccessEditMainAddressState(this.check);
+}
 
-  LoginState copyWith({emailAddress, password, bool? isSubmitting}) {
-    return LoginState(
-      emailAddress: emailAddress ?? this.emailAddress,
-      password: password ?? this.password,
-    );
-  }
+class LoadingEditLocationState extends GoogleMapState {}
+
+class SuccessEditLocationState extends GoogleMapState {
+  String message;
+  SuccessEditLocationState(this.message);
+}
+
+class FailEditLocationState extends GoogleMapState {
+  String message;
+  FailEditLocationState(this.message);
 }

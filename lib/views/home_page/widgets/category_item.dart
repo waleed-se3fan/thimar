@@ -77,15 +77,26 @@ class CategoryItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${list[index].price.toString()} ر.س',
+                    '${list[index].price.toString()}ر.س',
+                    //overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: AppColors.mainColor,
                         fontSize: 16,
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.bold),
                   ),
+                  Text(
+                    '${list[index].price_before_discount.toString()}ر.س',
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: AppColors.lightmainColor,
+                      color: AppColors.lightmainColor,
+                      fontSize: 14,
+                      fontFamily: 'Tajawal',
+                    ),
+                  ),
                   Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: AppColors.lightmainColor),
@@ -98,10 +109,16 @@ class CategoryItem extends StatelessWidget {
               Center(
                   child: BlocConsumer<CartBloc, CartState>(
                 listener: (context, state) {
-                  // state is SuccessStoretoCartState
-                  //     ? ScaffoldMessenger.of(context).showSnackBar(
-                  //         SnackBar(content: Text(state.message)))
-                  //     : null;
+                  // if (state is SuccessStoretoCartState) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //     content: Text(
+                  //       state.message,
+                  //     ),
+                  //     duration: Duration(milliseconds: 200),
+                  //   ));
+                  // } else {
+                  //   print('*--**-*-*-');
+                  // }
                 },
                 builder: (context, statee) {
                   return statee is LoadingStoretoCartState &&

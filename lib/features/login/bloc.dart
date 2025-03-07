@@ -41,14 +41,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final FormState? form = formKey.currentState;
     if (form!.validate()) {
       try {
-        var response = await Dio().post('${ApiClass.baseApi}login', data: {
-          'phone': event.phone,
-          'password': event.password,
-          'device_token': 'test',
-          'type': 'ios',
-          'user_type': 'client'
-        });
+        var response = await Dio().post('${ApiClass.baseApi}login',
+            options: Options(headers: {
+              'Accept': 'application/json',
+              'lang': 'ar',
+              'Accept-Language': 'ar',
+            }),
+            data: {
+              'phone': event.phone,
+              'password': event.password,
+              'device_token': 'test',
+              'type': 'ios',
+              'user_type': 'client'
+            });
         setData(response);
+
         message = response.data['status'];
         emit(LoginSuccesState(message!));
         final sharedPref = await SharedPreferences.getInstance();
@@ -81,7 +88,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     sharedPref.setString('phone', response.data['data']['phone']);
     sharedPref.setString('image', response.data['data']['image']);
     sharedPref.setString('token', response.data['data']['token']);
-    //  sharedPref.setString('city_name', response.data['data']['city']['name']);
+    sharedPref.setString('city_name', response.data['data']['city']['name']);
 
 //    city_name = sharedPref.getString('city_name')!;
 
@@ -95,6 +102,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     phone = sharedPref.getString('phone')!;
     image = sharedPref.getString('image')!;
     token = sharedPref.getString('token')!;
+    city_name = sharedPref.getString('city_name');
 
     print('************************************************');
 
@@ -102,6 +110,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     print(phone);
     print(image);
     print(token);
+    print(city_name);
   }
 
   forgetPassword(ForegtPasswordEvent event, Emitter<LoginState> emit) async {

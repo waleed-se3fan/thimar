@@ -34,13 +34,11 @@ Widget modalButtomSheet(context) {
                                 itemBuilder: (c, i) {
                                   return InkWell(
                                     onTap: () {
-                                      context.read<RegisterBloc>().cityValue =
+                                      RegisterBloc.cityValue =
                                           state.cities![i].name;
+                                      RegisterBloc.cityId = state.cities![i].id;
                                       Navigator.pop(
-                                          context,
-                                          context
-                                              .read<RegisterBloc>()
-                                              .cityValue);
+                                          context, RegisterBloc.cityValue);
 
                                       context
                                           .read<RegisterBloc>()

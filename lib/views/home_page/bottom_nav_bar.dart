@@ -7,6 +7,8 @@ import 'package:salla_thumara/views/favourite/view.dart';
 import 'package:salla_thumara/views/home_page/home_page.dart';
 import 'package:salla_thumara/views/home_page/widgets/custom_appbar.dart';
 import 'package:salla_thumara/views/my_account_page/my_account_page.dart';
+import 'package:salla_thumara/views/notification/view.dart';
+import 'package:salla_thumara/views/orders/orders.dart';
 import '../../features/home_page/bloc.dart';
 
 // ignore: must_be_immutable
@@ -14,8 +16,8 @@ class BottomNavBar extends StatelessWidget {
   BottomNavBar({super.key});
   List<Widget> body = const [
     HomePage(),
-    Text('Page 2'),
-    Text('Page 3'),
+    OrdersScreen(),
+    NotificationScreen(),
     FavouriteScreen(),
     MyAccountPage()
   ];

@@ -5,7 +5,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;
 
-  CustomAppBar({this.height = kToolbarHeight, required this.title});
+  const CustomAppBar(
+      {super.key, this.height = kToolbarHeight, required this.title});
 
   @override
   Size get preferredSize => Size.fromHeight(height);
@@ -17,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: CustomMainText(text: title, fontSize: 20),
       centerTitle: true,
       leading: Container(
-          margin: EdgeInsets.all(4),
+          margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
               color: const Color.fromARGB(68, 76, 134, 19),
               borderRadius: BorderRadius.circular(18)),

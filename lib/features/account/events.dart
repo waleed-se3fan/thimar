@@ -3,11 +3,17 @@ part of 'bloc.dart';
 class AccountEvent {}
 
 class EditPersonalDataEvent extends AccountEvent {
-  // File image;
+  XFile image;
   String fullname;
   String phone;
   int cityId;
-  EditPersonalDataEvent(this.fullname, this.phone, this.cityId);
+  EditPersonalDataEvent(this.image, this.fullname, this.phone, this.cityId);
+}
+
+class EditPasswordEvent extends AccountEvent {
+  String oldPassword;
+  String newPassword;
+  EditPasswordEvent(this.oldPassword, this.newPassword);
 }
 
 class GetTermsEvent extends AccountEvent {}
@@ -34,3 +40,7 @@ class ChargeWalletEvent extends AccountEvent {
   String amount;
   ChargeWalletEvent(this.amount);
 }
+
+class ChangeImageEvent extends AccountEvent {}
+
+class GetPolicyEvent extends AccountEvent {}

@@ -47,3 +47,15 @@ class SuccessSelectTimeState extends CartState {
 }
 
 class FailSelectTimeState extends CartState {}
+
+class LoadingStoreOrderState extends CartState {}
+
+class SuccessStoreOrderState extends CartState {
+  String data;
+  SuccessStoreOrderState(this.data);
+}
+
+class FailStoreOrderState extends CartState {
+  String data;
+  FailStoreOrderState(this.data);
+}

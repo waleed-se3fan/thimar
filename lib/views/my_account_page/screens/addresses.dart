@@ -30,9 +30,9 @@ class AddressesScreen extends StatelessWidget {
           ),
         ),
       ),
-      appBar: CustomAppBar(title: 'العناوين'),
+      appBar: const CustomAppBar(title: 'العناوين'),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             BlocConsumer<AddressesBloc, AddressesState>(
@@ -57,7 +57,7 @@ class AddressesScreen extends StatelessWidget {
                                 ? const Center(
                                     child: Text('Empty list'),
                                   )
-                                : Container(
+                                : SizedBox(
                                     height:
                                         MediaQuery.of(context).size.height / 3,
                                     child: ListView.builder(

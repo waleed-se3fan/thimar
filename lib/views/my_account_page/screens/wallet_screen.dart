@@ -7,6 +7,7 @@ import 'package:salla_thumara/core/component/appbar.dart';
 import 'package:salla_thumara/core/utilities/colors.dart';
 import 'package:salla_thumara/core/utilities/constatnt.dart';
 import 'package:salla_thumara/features/account/bloc.dart';
+import 'package:salla_thumara/views/my_account_page/screens/paymob.dart';
 
 class WalletSceen extends StatelessWidget {
   const WalletSceen({super.key});
@@ -14,7 +15,7 @@ class WalletSceen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(title: 'المحفظة'),
+        appBar: const CustomAppBar(title: 'المحفظة'),
         body: BlocConsumer<AccountBloc, AccountState>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -50,6 +51,31 @@ class WalletSceen extends StatelessWidget {
                         height: 50.h,
                       ),
                       const MyButton(),
+                      SizedBox(
+                        height: 25.h,
+                      ),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              padding: MaterialStatePropertyAll(
+                                  EdgeInsets.symmetric(horizontal: 80.w))),
+                          onPressed: () async {
+                            final authToken =
+                                await PaymobService.getAuthToken();
+                            final orderId = await PaymobService.createOrder(
+                                authToken, 10000); // 100 جنيه
+                            final paymentKey =
+                                await PaymobService.getPaymentKey(
+                                    authToken, orderId, 10000);
+                            String paymentUrl =
+                                "https://accept.paymob.com/api/acceptance/iframes/905872?payment_token=$paymentKey";
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (c) {
+                              return PaymentWebView(
+                                paymentUrl: paymentUrl!,
+                              );
+                            }));
+                          },
+                          child: Text('اشحن عن طريق paymop')),
                       SizedBox(
                         height: 50.h,
                       ),

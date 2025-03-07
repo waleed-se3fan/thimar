@@ -13,7 +13,7 @@ class ComplaintsAndSuggestionScreen extends StatelessWidget {
     var bloc = context.read<AccountBloc>();
 
     return Scaffold(
-      appBar: CustomAppBar(title: 'الاقتراحات والشكاوي'),
+      appBar: const CustomAppBar(title: 'الاقتراحات والشكاوي'),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(

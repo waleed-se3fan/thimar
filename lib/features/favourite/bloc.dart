@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:salla_thumara/features/home_page/bloc.dart';
+import 'package:salla_thumara/features/login/bloc.dart';
 
 import '../../data/catigories.dart';
 
@@ -26,10 +26,8 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
       await Dio()
           .get(
               'https://thimar.amr.aait-d.com/public/api/client/products/favorites',
-              options: Options(headers: {
-                'Authorization':
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-              }))
+              options: Options(
+                  headers: {'Authorization': 'Bearer ${LoginBloc.token}'}))
           .then((value) {
         if (value.data['data'] == null) {
           emit(EmptyFavouriteState());
@@ -55,8 +53,7 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
           'https://thimar.amr.aait-d.com/public/api/client/products/${HomePageBloc.list1![event.id].id.toString()}/add_to_favorite',
           options: Options(headers: {
             'Accept-Language': 'ar',
-            'Authorization':
-                'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
+            'Authorization': 'Bearer ${LoginBloc.token}'
           }));
       print(response.data['message']);
       emit(SuccessAddtoFavourite(response.data['message']));
@@ -70,12 +67,10 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
       RemoveFromFavourite event, Emitter<FavouriteState> emit) async {
     emit(LoadingRemoveFromFavourite());
     try {
-      var response = await Dio().post(
+      await Dio().post(
           'https://thimar.amr.aait-d.com/public/api/client/products/${HomePageBloc.list1![event.id].id.toString()}/remove_from_favorite',
-          options: Options(headers: {
-            'Authorization':
-                'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGhpbWFyLmFtci5hYWl0LWQuY29tXC9wdWJsaWNcL2FwaVwvdmVyaWZ5IiwiaWF0IjoxNjkzMTIxMjQ1LCJleHAiOjE3MjQ2NTcyNDUsIm5iZiI6MTY5MzEyMTI0NSwianRpIjoiNUx5alVDR2d1M1d4dW9jVyIsInN1YiI6OTE4LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7P9D3chjeVySRuj-Nuvmd16jj1hqZkZFMWxe2VDqDEg'
-          }));
+          options:
+              Options(headers: {'Authorization': 'Bearer ${LoginBloc.token}'}));
 
       emit(SuccessRemoveFromFavourite('تم ازالة المنتج من قائمة المفضلة'));
     } on DioException catch (e) {

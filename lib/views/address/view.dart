@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salla_thumara/core/component/appbar.dart';
+import 'package:salla_thumara/core/component/main_text.dart';
 import 'package:salla_thumara/core/utilities/colors.dart';
 import 'package:salla_thumara/core/utilities/navigation.dart';
 import 'package:salla_thumara/features/google_map/bloc.dart';
@@ -23,7 +24,7 @@ class AddAddressScreen extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height / 2.6,
                   child: BlocProvider(
                     create: (context) =>
@@ -142,7 +143,36 @@ class AddAddressScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    BlocProvider(
+                      create: (context) => GoogleMapBloc(),
+                      child: BlocBuilder<GoogleMapBloc, GoogleMapState>(
+                        builder: (context, statee) {
+                          return statee is SuccessChangeMainAddressState
+                              ? Checkbox(
+                                  value: statee.check,
+                                  onChanged: (value) => context
+                                      .read<GoogleMapBloc>()
+                                      .add(ChangeMainAddressEvent(value!)),
+                                )
+                              : Checkbox(
+                                  value: bloc.mainAddress,
+                                  onChanged: (value) => context
+                                      .read<GoogleMapBloc>()
+                                      .add(ChangeMainAddressEvent(value!)),
+                                );
+                        },
+                      ),
+                    ),
+                    const CustomMainText(
+                        text: 'التعيين كعنوان رئيسي', fontSize: 14)
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 BlocConsumer<GoogleMapBloc, GoogleMapState>(
                   builder: (context, state) {
@@ -168,7 +198,8 @@ class AddAddressScreen extends StatelessWidget {
                                       bloc.descriptionController.text,
                                       GoogleMapBloc.latit!,
                                       GoogleMapBloc.long!,
-                                      GoogleMapBloc.streatName!));
+                                      GoogleMapBloc.streatName!,
+                                      bloc.mainAddress));
                             },
                             child: const Text(
                               'اضافة العنوان',

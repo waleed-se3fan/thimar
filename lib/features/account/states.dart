@@ -72,3 +72,25 @@ class FailChargetState extends AccountState {
   String message;
   FailChargetState(this.message);
 }
+
+class SuccessChangeImageState extends AccountState {
+  String path;
+  SuccessChangeImageState(this.path);
+}
+
+class SuccessUpdateProfileState extends AccountState {}
+
+class LoadingUpdateProfileState extends AccountState {}
+
+class LoadingPolicyState extends AccountState {}
+
+class SuccessPolicyState extends AccountState {
+  String policy;
+  SuccessPolicyState(this.policy);
+}
+
+class FailPolicyState extends AccountState {}
+
+class LoadingEditPasswordState extends AccountState {}
+
+class SuccessEditPasswordState extends AccountState {}

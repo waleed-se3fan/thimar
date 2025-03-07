@@ -35,3 +35,5 @@ class NoteEvent extends CartEvent {
   String note;
   NoteEvent(this.note);
 }
+
+class StoreOrderEvent extends CartEvent {}

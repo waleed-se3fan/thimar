@@ -9,8 +9,9 @@ import 'package:salla_thumara/features/login/bloc.dart';
 import 'package:salla_thumara/views/auth/login.dart';
 import 'package:salla_thumara/views/my_account_page/screens/about_screen.dart';
 import 'package:salla_thumara/views/my_account_page/screens/addresses.dart';
-
+import 'package:salla_thumara/views/my_account_page/screens/contact_us.dart';
 import 'package:salla_thumara/views/my_account_page/screens/personal_data.dart';
+import 'package:salla_thumara/views/my_account_page/screens/policy.dart';
 import 'package:salla_thumara/views/my_account_page/screens/repeat_quistion.dart';
 import 'package:salla_thumara/views/my_account_page/screens/suggestion.dart';
 import 'package:salla_thumara/views/my_account_page/screens/terms.dart';
@@ -33,8 +34,10 @@ class MyAccountPage extends StatelessWidget {
           const AddressesScreen()),
       Data('assets/images/icons/paid.svg', 'اسئلة متكررة',
           const RepeatQuistionScreen()),
-      Data('assets/images/icons/Question.svg', 'سياسة الخصوصية', Container()),
-      Data('assets/images/icons/user.svg', 'تواصل معنا', Container()),
+      Data('assets/images/icons/Question.svg', 'سياسة الخصوصية',
+          const PolicyScreen()),
+      Data('assets/images/icons/user.svg', 'تواصل معنا',
+          const ContactUsScreen()),
       Data('assets/images/icons/Calling.svg', 'الشكاوي والاقتراحات',
           const ComplaintsAndSuggestionScreen()),
       Data('assets/images/icons/Note.svg', 'مشاركة التطبيق', Container()),
@@ -88,7 +91,7 @@ class MyAccountPage extends StatelessWidget {
                         ),
                         Text(
                           LoginBloc.fullName!,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               fontFamily: 'Tajawal',
@@ -147,9 +150,14 @@ class MyAccountPage extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 child: GestureDetector(
                   onTap: () async {
+                    LoginBloc.city_name = null;
+                    LoginBloc.fullName = null;
+                    LoginBloc.image = null;
+                    LoginBloc.phone = null;
+                    LoginBloc.token = null;
                     final sharedPref = await SharedPreferences.getInstance();
                     sharedPref.setBool('islogin', false).then((value) {
-                      navigateTo(LoginScreen());
+                      navigateTo(const LoginScreen());
                     });
                   },
                   child: Row(

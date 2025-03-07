@@ -37,6 +37,54 @@ class RegisterScreen extends StatelessWidget {
 
           navigateTo(EmailVerificationScreen(
               context.read<RegisterBloc>().registerphoneController.text));
+
+          showGeneralDialog(
+            barrierLabel: "Label",
+            barrierDismissible: true,
+            barrierColor: Colors.transparent,
+            transitionDuration: const Duration(seconds: 1),
+            context: context,
+            pageBuilder: (context, anim1, anim2) {
+              return GestureDetector(
+                onVerticalDragUpdate: (dragUpdateDetails) {
+                  Navigator.of(context).pop();
+                },
+                child: Column(
+                  children: [
+                    const SizedBox(height: 40),
+                    Card(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 10),
+                      child: Container(
+                        height: 60,
+                        width: width(context) / 1.7,
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.withOpacity(.8),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Center(
+                            child: Text(
+                          'Verification code is : 1111 ',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Tajawal',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200),
+                        )),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            transitionBuilder: (context, anim1, anim2, child) {
+              return SlideTransition(
+                position: anim1.drive(
+                    Tween(begin: const Offset(0, -1), end: const Offset(0, 0))),
+                child: child,
+              );
+            },
+          );
         }
       },
       builder: (context, state) {
@@ -99,50 +147,61 @@ class RegisterScreen extends StatelessWidget {
                   SizedBox(
                     height: 8.h,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.submainColor),
-                              borderRadius: BorderRadius.circular(15.r)),
-                          padding: EdgeInsets.all(2.r),
-                          child: MaterialButton(
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(AppImaes().report,
-                                      height: 15.h),
-                                  SizedBox(
-                                    width: 15.w,
-                                  ),
-                                  const Text(
-                                    'المدينة',
-                                    style: TextStyle(
-                                        fontSize: 15, fontFamily: 'Tajawal'),
-                                  ),
-                                ],
+                  BlocProvider(
+                    create: (context) => RegisterBloc(),
+                    child: BlocBuilder<RegisterBloc, RegisterState>(
+                      builder: (context, state) {
+                        return Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: AppColors.submainColor),
+                                    borderRadius: BorderRadius.circular(15.r)),
+                                padding: EdgeInsets.all(2.r),
+                                child: MaterialButton(
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(AppImaes().report,
+                                            height: 15.h),
+                                        SizedBox(
+                                          width: 15.w,
+                                        ),
+                                        const Text(
+                                          'المدينة',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'Tajawal'),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () async {
+                                      context
+                                          .read<RegisterBloc>()
+                                          .add(ChoiseCountryEvent());
+                                      RegisterBloc.cityValue =
+                                          await showModalBottomSheet(
+                                        context: context,
+                                        builder: (mcontext) {
+                                          return modalButtomSheet(context);
+                                        },
+                                      );
+                                    }),
                               ),
-                              onPressed: () async {
-                                context
-                                    .read<RegisterBloc>()
-                                    .add(ChoiseCountryEvent());
-                                bloc.cityValue = await showModalBottomSheet(
-                                  context: context,
-                                  builder: (mcontext) {
-                                    return modalButtomSheet(context);
-                                  },
-                                );
-                              }),
-                        ),
-                      ),
-                      state is CitySelectorState
-                          ? Text(
-                              state.city.toString(),
-                              style: const TextStyle(fontFamily: 'Tajawal'),
-                            )
-                          : Container(),
-                    ],
+                            ),
+                            state is CitySelectorState
+                                ? Text(
+                                    state.city.toString(),
+                                    style:
+                                        const TextStyle(fontFamily: 'Tajawal'),
+                                  )
+                                : Container(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 8.h,
@@ -202,17 +261,14 @@ class RegisterScreen extends StatelessWidget {
                       : CustomButtom(
                           text: 'تسجيل ',
                           function: () async {
-                            String c;
-                            state is CitySelectorState
-                                ? c = state.city
-                                : c = 'null';
-                            var bloc = context.read<RegisterBloc>();
-
+                            print(RegisterBloc.cityValue);
+                            print(RegisterBloc.cityId);
+                            print('--------------------------------------');
                             context.read<RegisterBloc>().add(
                                 GetRegisterDataEvent(
                                     bloc.registernameController.text,
                                     bloc.registerphoneController.text,
-                                    c));
+                                    RegisterBloc.cityId!));
                           }),
                   SizedBox(
                     height: 30.h,

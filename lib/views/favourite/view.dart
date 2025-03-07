@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:salla_thumara/core/component/main_text.dart';
+import 'package:salla_thumara/core/utilities/colors.dart';
 import 'package:salla_thumara/features/favourite/bloc.dart';
 import 'package:salla_thumara/views/home_page/widgets/category_item.dart';
 
@@ -11,7 +14,10 @@ class FavouriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('المفضلة'),
+          title: const CustomMainText(
+            text: 'المفضلة',
+            fontSize: 20,
+          ),
           centerTitle: true,
           automaticallyImplyLeading: false,
         ),
@@ -34,13 +40,28 @@ class FavouriteScreen extends StatelessWidget {
                                 return CategoryItem(i, state.favourites);
                               }),
                         )
-                      : state is NotInternetState
+                      : state is LoadingAddtoFavourite
                           ? const Center(
-                              child: Text('لايوجد اتصال بالانترنت'),
+                              child: CircularProgressIndicator(),
                             )
-                          : state is LoadingAddtoFavourite
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
+                          : state is EmptyFavouriteState
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.do_disturb_alt_outlined,
+                                        color: AppColors.mainColor,
+                                        size: 45,
+                                      ),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      const CustomMainText(
+                                          text: 'لا يوجد شئ في المفضلة',
+                                          fontSize: 19)
+                                    ],
+                                  ),
                                 )
                               : const Center(
                                   child: CircularProgressIndicator(),

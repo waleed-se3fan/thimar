@@ -16,7 +16,7 @@ class _RepeatQuistionScreenState extends State<RepeatQuistionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'اسئلة متكررة'),
+      appBar: const CustomAppBar(title: 'اسئلة متكررة'),
       body: BlocProvider(
         create: (context) => AccountBloc()..add(GetFreqQuistionEvent()),
         child: BlocBuilder<AccountBloc, AccountState>(

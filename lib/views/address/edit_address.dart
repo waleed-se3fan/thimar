@@ -154,8 +154,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           borderColor: const [Colors.white],
                           initialLabelIndex:
                               widget.allAdresses![widget.index].type == 'home'
-                                  ? 1
-                                  : 0,
+                                  ? 0
+                                  : 1,
                           totalSwitches: 2,
                           labels: const ['المنزل', 'العمل'],
                           onToggle: (index) {},
@@ -202,35 +202,84 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           fontFamily: 'Tajawal'),
                     ),
                   ),
+                  Row(
+                    children: [
+                      BlocProvider(
+                        create: (context) => GoogleMapBloc(),
+                        child: BlocBuilder<GoogleMapBloc, GoogleMapState>(
+                          builder: (context, statee) {
+                            return statee is SuccessEditMainAddressState
+                                ? Checkbox(
+                                    value: statee.check,
+                                    onChanged: (value) => context
+                                        .read<GoogleMapBloc>()
+                                        .add(EditMainAddressEvent(value!)),
+                                  )
+                                : Checkbox(
+                                    value: widget.allAdresses![widget.index]
+                                                .isDefault ==
+                                            true
+                                        ? true
+                                        : bloc.editAddress,
+                                    onChanged: (value) => context
+                                        .read<GoogleMapBloc>()
+                                        .add(EditMainAddressEvent(value!)),
+                                  );
+                          },
+                        ),
+                      ),
+                      const CustomMainText(
+                          text: 'التعيين كعنوان رئيسي', fontSize: 14)
+                    ],
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.all(18),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all(AppColors.mainColor)),
-                        onPressed: () async {
-                          context.read<GoogleMapBloc>().add(UpdateLocationEvent(
-                              widget.allAdresses![widget.index].id,
-                              bloc.editType == 0 ? 'المنزل' : 'العمل',
-                              descriptionController.text,
-                              phoneController.text,
-                              GoogleMapBloc.latit!,
-                              GoogleMapBloc.long!,
-                              GoogleMapBloc.streatName!));
+                  BlocProvider(
+                      create: (context) => GoogleMapBloc(),
+                      child: BlocConsumer<GoogleMapBloc, GoogleMapState>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          return state is LoadingEditLocationState
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          padding: MaterialStateProperty.all(
+                                            const EdgeInsets.all(18),
+                                          ),
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppColors.mainColor)),
+                                      onPressed: () async {
+                                        context.read<GoogleMapBloc>().add(
+                                            UpdateLocationEvent(
+                                                widget
+                                                    .allAdresses![widget.index]
+                                                    .id,
+                                                bloc.editType == 1
+                                                    ? 'المنزل'
+                                                    : 'العمل',
+                                                descriptionController.text,
+                                                phoneController.text,
+                                                GoogleMapBloc.latit!,
+                                                GoogleMapBloc.long!,
+                                                GoogleMapBloc.streatName!,
+                                                bloc.editAddress));
 
-                          navigateTo(BottomNavBar(), withHistory: false);
+                                        navigateTo(BottomNavBar(),
+                                            withHistory: false);
+                                      },
+                                      child: const Text(
+                                        'تعديل العنوان',
+                                        style: TextStyle(color: Colors.white),
+                                      )),
+                                );
                         },
-                        child: const Text(
-                          'تعديل العنوان',
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ),
+                      ))
                 ],
               ),
             ),

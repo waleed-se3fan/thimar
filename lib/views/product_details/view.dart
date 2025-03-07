@@ -25,9 +25,67 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: AppColors.mainColor,
+          ),
+        ),
+        actions: [
+          BlocProvider(
+            create: (context) => FavouriteBloc(),
+            child: BlocConsumer<FavouriteBloc, FavouriteState>(
+              listener: (context, state) {
+                state is SuccessAddtoFavourite
+                    ? ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(state.message)))
+                    : state is SuccessRemoveFromFavourite
+                        ? ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)))
+                        : null;
+              },
+              builder: (context, state) {
+                return widget.product.is_favorite
+                    ? IconButton(
+                        onPressed: () {
+                          HomePageBloc.list1![widget.categoryId].is_favorite =
+                              false;
+                          setState(() {});
+
+                          context
+                              .read<FavouriteBloc>()
+                              .add(RemoveFromFavourite(widget.categoryId));
+                        },
+                        icon: const Icon(
+                          CupertinoIcons.heart_fill,
+                          color: Colors.red,
+                        ))
+                    : IconButton(
+                        onPressed: () {
+                          HomePageBloc.list1![widget.categoryId].is_favorite =
+                              true;
+                          setState(() {});
+                          context
+                              .read<FavouriteBloc>()
+                              .add(AddToFavourite(widget.categoryId));
+                        },
+                        icon: Icon(
+                          CupertinoIcons.heart,
+                          color: AppColors.mainColor,
+                        ));
+              },
+            ),
+          ),
+        ],
+      ),
       bottomSheet: GestureDetector(
         onTap: () {
           context.read<CartBloc>().add(
@@ -181,303 +239,317 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height / 3,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(widget.product.main_image),
-                          fit: BoxFit.fill),
-                      borderRadius: const BorderRadius.vertical(
-                          bottom: Radius.circular(15))),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomMainText(text: widget.product.title, fontSize: 22),
-                    Row(
-                      children: [
-                        Text(
-                          '${widget.product.discount.toString()} %',
-                          style: const TextStyle(
-                            color: Color(0xffFF0000),
-                            fontFamily: 'Tajawal',
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        CustomMainText(
-                            text: '${widget.product.price.toString()} ر.س',
-                            fontSize: 22),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          '${widget.product.price_before_discount} ر.س',
-                          style: const TextStyle(
-                              color: Color(0xff4C8613),
-                              fontFamily: 'Tajawal',
-                              fontSize: 13,
-                              decoration: TextDecoration.lineThrough),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'السعر/1كجم',
-                      style: TextStyle(
-                          fontFamily: 'Tajawal',
-                          color: Color(0xff808080),
-                          fontSize: 19),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: const Color(0xff4C8613).withOpacity(.15),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height / 3,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(widget.product.main_image),
+                                fit: BoxFit.fill),
+                            borderRadius: const BorderRadius.vertical(
+                                bottom: Radius.circular(15))),
                       ),
-                      child: Row(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: AppColors.whiteColor,
-                            ),
-                            padding: const EdgeInsets.all(2),
-                            child: const Icon(
-                              Icons.add,
-                              color: Color(0xff4C8613),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: Text(
-                              '0',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                          Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: AppColors.whiteColor,
+                          CustomMainText(
+                              text: widget.product.title, fontSize: 22),
+                          Row(
+                            children: [
+                              Text(
+                                '${widget.product.discount.toString()} %',
+                                style: const TextStyle(
+                                  color: Color(0xffFF0000),
+                                  fontFamily: 'Tajawal',
+                                  fontSize: 13,
+                                ),
                               ),
-                              padding: const EdgeInsets.all(2),
-                              child: const Icon(Icons.remove,
-                                  color: Color(0xff4C8613)))
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              CustomMainText(
+                                  text:
+                                      '${widget.product.price.toString()} ر.س',
+                                  fontSize: 22),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                '${widget.product.price_before_discount} ر.س',
+                                style: const TextStyle(
+                                    color: Color(0xff4C8613),
+                                    fontFamily: 'Tajawal',
+                                    fontSize: 13,
+                                    decoration: TextDecoration.lineThrough),
+                              )
+                            ],
+                          )
                         ],
                       ),
-                    )
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 30),
-                  child: Row(
-                    children: [
-                      CustomMainText(text: 'كود المنتج', fontSize: 17),
-                      Text(
-                        '56638',
-                        style: TextStyle(
-                            fontFamily: 'Tajawal',
-                            color: Color(0xff808080),
-                            fontSize: 19),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'السعر/1كجم',
+                            style: TextStyle(
+                                fontFamily: 'Tajawal',
+                                color: Color(0xff808080),
+                                fontSize: 19),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(3.5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xff4C8613).withOpacity(.15),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: AppColors.whiteColor,
+                                  ),
+                                  padding: const EdgeInsets.all(.1),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      index++;
+                                      context.read<CartBloc>().add(
+                                          StoreToCartEvent(
+                                              widget.product.id.toInt(),
+                                              widget.categoryId));
+                                      setState(() {});
+                                    },
+                                    child: const Icon(
+                                      Icons.add,
+                                      color: Color(0xff4C8613),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Text(
+                                    index.toString(),
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: AppColors.whiteColor,
+                                    ),
+                                    padding: const EdgeInsets.all(.1),
+                                    child: const Icon(Icons.remove,
+                                        color: Color(0xff4C8613)))
+                              ],
+                            ),
+                          ),
+
+                          /*   Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xff4C8613).withOpacity(.15),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: AppColors.whiteColor,
+                                  ),
+                                  padding: const EdgeInsets.all(2),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Color(0xff4C8613),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Text(
+                                    '0',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: AppColors.whiteColor,
+                                    ),
+                                    padding: const EdgeInsets.all(2),
+                                    child: const Icon(Icons.remove,
+                                        color: Color(0xff4C8613)))
+                              ],
+                            ),
+                          )
+                     */
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 30),
+                        child: Row(
+                          children: [
+                            CustomMainText(text: 'كود المنتج', fontSize: 17),
+                            Text(
+                              '56638',
+                              style: TextStyle(
+                                  fontFamily: 'Tajawal',
+                                  color: Color(0xff808080),
+                                  fontSize: 19),
+                            )
+                          ],
+                        ),
+                      ),
+                      const Align(
+                        alignment: Alignment.topRight,
+                        child:
+                            CustomMainText(text: 'تفاصيل المنتج', fontSize: 17),
+                      ),
+                      Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            widget.product.description,
+                            style: const TextStyle(
+                                fontFamily: 'Tajawal', fontSize: 14),
+                          )),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomMainText(text: 'التقييمات ', fontSize: 17),
+                          CustomMainText(text: 'عرض الكل ', fontSize: 15),
+                        ],
+                      ),
+                      BlocProvider(
+                        create: (context) => HomePageBloc()
+                          ..add(GetProductRateEvent(widget.categoryId)),
+                        child: BlocBuilder<HomePageBloc, HomePageState>(
+                          builder: (context, state) {
+                            return state is SuccessProductRateState
+                                ? Container(
+                                    padding: const EdgeInsets.all(10),
+                                    height: 80,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: state.productRates.length,
+                                      itemBuilder: (c, i) {
+                                        return Row(
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      state.productRates[i]
+                                                          .client_name,
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          fontFamily: 'Tajawal',
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 8,
+                                                    ),
+                                                    RatingBar(
+                                                      itemSize: 18,
+                                                      initialRating: state
+                                                          .productRates[i].value
+                                                          .toDouble(),
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      itemCount: 5,
+                                                      itemPadding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal: .01),
+                                                      onRatingUpdate:
+                                                          (rating) {},
+                                                      ratingWidget:
+                                                          RatingWidget(
+                                                        full: const Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                        half: const Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                        empty: const Icon(
+                                                          Icons.star,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Text(
+                                                  state.productRates[i].comment,
+                                                  style: const TextStyle(
+                                                      fontFamily: 'Tajawal',
+                                                      fontSize: 12),
+                                                )
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              width: 12,
+                                            ),
+                                            Container(
+                                              height: 60,
+                                              width: 60,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: NetworkImage(state
+                                                          .productRates[i]
+                                                          .client_image)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return const SizedBox(
+                                          width: 30,
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : state is LoadingProductRateState
+                                    ? const Padding(
+                                        padding: EdgeInsets.all(20.0),
+                                        child: LinearProgressIndicator(),
+                                      )
+                                    : const Center(
+                                        child: Text(
+                                          'لاتوجد تقييمات',
+                                          style: TextStyle(
+                                              fontFamily: 'Tajawal',
+                                              fontSize: 16),
+                                        ),
+                                      );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 80.h,
                       )
                     ],
                   ),
-                ),
-                const Align(
-                  alignment: Alignment.topRight,
-                  child: CustomMainText(text: 'تفاصيل المنتج', fontSize: 17),
-                ),
-                Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      widget.product.description,
-                      style:
-                          const TextStyle(fontFamily: 'Tajawal', fontSize: 14),
-                    )),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomMainText(text: 'التقييمات ', fontSize: 17),
-                    CustomMainText(text: 'عرض الكل ', fontSize: 15),
-                  ],
-                ),
-                BlocProvider(
-                  create: (context) => HomePageBloc(),
-                  child: BlocConsumer<HomePageBloc, HomePageState>(
-                    listener: (context, state) {},
-                    builder: (context, state) {
-                      state is HomePageInitial
-                          ? context
-                              .read<HomePageBloc>()
-                              .add(GetProductRateEvent(widget.categoryId))
-                          : null;
-                      return state is SuccessProductRateState
-                          ? Container(
-                              padding: const EdgeInsets.all(10),
-                              height: 80,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemCount: state.productRates.length,
-                                itemBuilder: (c, i) {
-                                  return Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                state.productRates[i]
-                                                    .client_name,
-                                                style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    fontFamily: 'Tajawal',
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              RatingBar(
-                                                itemSize: 18,
-                                                initialRating: state
-                                                    .productRates[i].value
-                                                    .toDouble(),
-                                                direction: Axis.horizontal,
-                                                itemCount: 5,
-                                                itemPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: .01),
-                                                onRatingUpdate: (rating) {},
-                                                ratingWidget: RatingWidget(
-                                                  full: const Icon(
-                                                    Icons.star,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  half: const Icon(
-                                                    Icons.star,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  empty: const Icon(
-                                                    Icons.star,
-                                                    color: Colors.grey,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Text(
-                                            state.productRates[i].comment,
-                                            style: const TextStyle(
-                                                fontFamily: 'Tajawal',
-                                                fontSize: 12),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                fit: BoxFit.fill,
-                                                image: NetworkImage(state
-                                                    .productRates[i]
-                                                    .client_image)),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                      ),
-                                    ],
-                                  );
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return const SizedBox(
-                                    width: 30,
-                                  );
-                                },
-                              ),
-                            )
-                          : const Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: LinearProgressIndicator(),
-                            );
-                    },
-                  ),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_rounded,
-                    color: AppColors.mainColor,
-                  ),
-                ),
-                BlocProvider(
-                  create: (context) => FavouriteBloc(),
-                  child: BlocConsumer<FavouriteBloc, FavouriteState>(
-                    listener: (context, state) {
-                      state is SuccessAddtoFavourite
-                          ? ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.message)))
-                          : state is SuccessRemoveFromFavourite
-                              ? ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(state.message)))
-                              : null;
-                    },
-                    builder: (context, state) {
-                      return HomePageBloc.list1![widget.categoryId].is_favorite
-                          ? IconButton(
-                              onPressed: () {
-                                HomePageBloc.list1![widget.categoryId]
-                                    .is_favorite = false;
-                                setState(() {});
-
-                                context.read<FavouriteBloc>().add(
-                                    RemoveFromFavourite(widget.categoryId));
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.heart_fill,
-                                color: Colors.red,
-                              ))
-                          : IconButton(
-                              onPressed: () {
-                                HomePageBloc.list1![widget.categoryId]
-                                    .is_favorite = true;
-                                setState(() {});
-                                context
-                                    .read<FavouriteBloc>()
-                                    .add(AddToFavourite(widget.categoryId));
-                              },
-                              icon: Icon(
-                                CupertinoIcons.heart,
-                                color: AppColors.mainColor,
-                              ));
-                    },
-                  ),
-                )
-              ],
-            )
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

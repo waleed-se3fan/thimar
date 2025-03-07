@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salla_thumara/core/component/shimmer.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:salla_thumara/core/utilities/navigation.dart';
 import 'package:salla_thumara/features/home_page/bloc.dart';
 import 'package:salla_thumara/views/section_details/view.dart';

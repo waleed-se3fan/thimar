@@ -8,6 +8,7 @@ import 'package:salla_thumara/features/addresses/bloc.dart';
 import 'package:salla_thumara/features/cart/bloc.dart';
 import 'package:salla_thumara/views/cart/cart.dart';
 import 'package:salla_thumara/views/address/widgets/addressModalSheet.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../features/google_map/bloc.dart';
 
 class Appbar extends StatelessWidget implements PreferredSize {
@@ -81,13 +82,18 @@ class Appbar extends StatelessWidget implements PreferredSize {
                                     fontSize: 14,
                                     color: Color(0xff4C8613)),
                               )
-                            : const Text(
-                                'عنواني',
-                                style: TextStyle(
-                                    fontFamily: 'Tajawal',
-                                    fontSize: 14,
-                                    color: Color(0xff4C8613)),
-                              );
+                            : Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 10.h,
+                                      width: 100.w,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  ],
+                                ));
                       },
                       listener: (context, state) {},
                     ),

@@ -127,7 +127,8 @@ class RegisterScreen extends StatelessWidget {
                                 context
                                     .read<RegisterBloc>()
                                     .add(ChoiseCountryEvent());
-                                bloc.cityValue = await showModalBottomSheet(
+                                RegisterBloc.cityValue =
+                                    await showModalBottomSheet(
                                   context: context,
                                   builder: (mcontext) {
                                     return modalButtomSheet(context);
@@ -200,17 +201,13 @@ class RegisterScreen extends StatelessWidget {
                       : CustomButtom(
                           text: 'تسجيل ',
                           function: () async {
-                            String c;
-                            state is CitySelectorState
-                                ? c = state.city
-                                : c = 'null';
                             var bloc = context.read<RegisterBloc>();
 
                             context.read<RegisterBloc>().add(
                                 GetRegisterDataEvent(
                                     bloc.registernameController.text,
                                     bloc.registerphoneController.text,
-                                    c));
+                                    RegisterBloc.cityId!));
                           }),
                   SizedBox(
                     height: 30.h,

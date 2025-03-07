@@ -27,9 +27,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final otpVerificationCode = TextEditingController();
   final controller = CountDownController();
 
-  String? cityValue;
+  static String? cityValue;
+  static String? cityId;
   citySelector(CitySelectorEvent event, Emitter<RegisterState> emit) {
-    emit(CitySelectorState(cityValue.toString()));
+    print(cityValue);
+    emit(CitySelectorState(cityValue!));
   }
 
   String? message;
@@ -55,6 +57,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           'phone': registerphoneController.text,
           'gender': 'female',
           'password_confirmation': registerconfirmpasswordController.text,
+          'city_id': event.city,
+          'country_id': '1'
         });
         mess2 = response.data['message'];
         SharedPreferences sharedPref = await SharedPreferences.getInstance();

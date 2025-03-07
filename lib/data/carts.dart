@@ -49,7 +49,7 @@ class Data {
   final int id;
   final String title;
   final String image;
-  final int amount;
+  int amount;
   final num price_before_discount;
   final num discount;
   final num price;

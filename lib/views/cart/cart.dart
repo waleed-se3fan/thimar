@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:salla_thumara/core/component/appbar.dart';
+import 'package:salla_thumara/core/component/main_text.dart';
 import 'package:salla_thumara/core/utilities/colors.dart';
 import 'package:salla_thumara/core/utilities/navigation.dart';
 import 'package:salla_thumara/features/cart/bloc.dart';
@@ -13,7 +15,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'السلة'),
+      appBar: const CustomAppBar(title: 'السلة'),
       bottomSheet: const CompleteRequest(),
       body: SafeArea(
         child: Column(
@@ -24,9 +26,11 @@ class CartScreen extends StatelessWidget {
                 state is CartInitial
                     ? context.read<CartBloc>().add(GetAllCartsEvent())
                     : null;
-                return state is FailGetAllCartsState
+                return state is! SuccessGetAllCartsState
                     ? const Center(
-                        child: Text('Fail'),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       )
                     : SingleChildScrollView(
                         child: SizedBox(
@@ -35,107 +39,159 @@ class CartScreen extends StatelessWidget {
                               ? const Center(
                                   child: Text('Empty'),
                                 )
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: CartBloc.cartInfo!.data.length,
-                                  itemBuilder: (c, i) {
-                                    return Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                              : Container(
+                                  padding: const EdgeInsets.all(12),
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: CartBloc.cartInfo!.data.length,
+                                      itemBuilder: (c, i) {
+                                        return Column(
                                           children: [
-                                            Container(
-                                              height: 100,
-                                              width: 110,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          CartBloc.cartInfo!
-                                                              .data[i].image
-                                                              .toString()))),
-                                            ),
-                                            Column(
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                Text(CartBloc
-                                                    .cartInfo!.data[i].title
-                                                    .toString()),
-                                                Text(
-                                                    '${CartBloc.cartInfo!.data[i].price.toString()}ر.س'),
-                                                Row(
+                                                Container(
+                                                  height: 85.h,
+                                                  width: 85.w,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              22),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              CartBloc.cartInfo!
+                                                                  .data[i].image
+                                                                  .toString()))),
+                                                ),
+                                                Column(
                                                   children: [
+                                                    CustomMainText(
+                                                      text: CartBloc.cartInfo!
+                                                          .data[i].title
+                                                          .toString(),
+                                                      fontSize: 15,
+                                                    ),
+                                                    CustomMainText(
+                                                      text:
+                                                          '${CartBloc.cartInfo!.data[i].price.toString()}ر.س',
+                                                      fontSize: 13,
+                                                    ),
                                                     Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3.5),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8),
-                                                        color: AppColors
-                                                            .whiteColor,
+                                                        color: const Color(
+                                                                0xff4C8613)
+                                                            .withOpacity(.15),
                                                       ),
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              2),
-                                                      child: const Icon(
-                                                        Icons.add,
-                                                        color:
-                                                            Color(0xff4C8613),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              color: AppColors
+                                                                  .whiteColor,
+                                                            ),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(.1),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                context
+                                                                    .read<
+                                                                        CartBloc>()
+                                                                    .add(StoreToCartEvent(
+                                                                        CartBloc
+                                                                            .cartInfo!
+                                                                            .data[i]
+                                                                            .id
+                                                                            .toInt(),
+                                                                        i));
+                                                              },
+                                                              child: const Icon(
+                                                                Icons.add,
+                                                                color: Color(
+                                                                    0xff4C8613),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        12),
+                                                            child: Text(
+                                                              CartBloc
+                                                                  .cartInfo!
+                                                                  .data[i]
+                                                                  .amount
+                                                                  .toString(),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .red),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                color: AppColors
+                                                                    .whiteColor,
+                                                              ),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(.1),
+                                                              child: const Icon(
+                                                                  Icons.remove,
+                                                                  color: Color(
+                                                                      0xff4C8613)))
+                                                        ],
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 15),
-                                                      child: Text(
-                                                        CartBloc.cartInfo!
-                                                            .data[i].amount
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color: Colors.red),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color: AppColors
-                                                              .whiteColor,
-                                                        ),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(2),
-                                                        child: const Icon(
-                                                            Icons.remove,
-                                                            color: Color(
-                                                                0xff4C8613)))
                                                   ],
                                                 ),
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      context
+                                                          .read<CartBloc>()
+                                                          .add(DeleteFromCart(
+                                                              i));
+                                                    },
+                                                    child: state
+                                                                is LoadingDeleteCartState &&
+                                                            CartBloc.cartIndex ==
+                                                                i
+                                                        ? const Center(
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          )
+                                                        : SvgPicture.asset(
+                                                            'assets/images/delete.svg'))
                                               ],
                                             ),
-                                            GestureDetector(
-                                                onTap: () {
-                                                  context
-                                                      .read<CartBloc>()
-                                                      .add(DeleteFromCart(i));
-                                                },
-                                                child: state
-                                                            is LoadingDeleteCartState &&
-                                                        CartBloc.cartIndex == i
-                                                    ? const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      )
-                                                    : SvgPicture.asset(
-                                                        'assets/images/delete.svg'))
+                                            const SizedBox(
+                                              height: 10,
+                                            )
                                           ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        )
-                                      ],
-                                    );
-                                  }),
+                                        );
+                                      }),
+                                ),
                         ),
                       );
               },
@@ -143,34 +199,6 @@ class CartScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CartItem extends StatelessWidget {
-  const CartItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          height: 100,
-          width: 110,
-          color: Colors.amber,
-        ),
-        const Column(
-          children: [
-            Text('طماطم'),
-            Text('45ر.س'),
-            Row(
-              children: [Icon(Icons.add), Text('5'), Icon(Icons.remove)],
-            )
-          ],
-        ),
-        const Icon(Icons.delete)
-      ],
     );
   }
 }
@@ -229,7 +257,7 @@ class CompleteRequest extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                    color: AppColors.lightmainColor2.withOpacity(.2),
+                    color: AppColors.lightmainColor2.withOpacity(.12),
                     borderRadius: BorderRadius.circular(18)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,23 +265,58 @@ class CompleteRequest extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('اجمالي المنتجات'),
-                        Text(CartBloc.cartInfo!.total_price_before_discount
-                            .toString()),
+                        const Text(
+                          'اجمالي المنتجات',
+                          style: TextStyle(
+                              color: Color(0xff4C8613),
+                              fontSize: 15,
+                              fontFamily: 'Tajawal'),
+                        ),
+                        Text(
+                          '${CartBloc.cartInfo!.total_price_before_discount}ر.س',
+                          style: const TextStyle(
+                              color: Color(0xff4C8613),
+                              fontSize: 15,
+                              fontFamily: 'Tajawal'),
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('الخصم'),
-                        Text(CartBloc.cartInfo!.total_discount.toString()),
+                        const Text(
+                          'الخصم',
+                          style: TextStyle(
+                              color: Color(0xff4C8613),
+                              fontSize: 15,
+                              fontFamily: 'Tajawal'),
+                        ),
+                        Text(
+                          '${CartBloc.cartInfo!.total_discount}ر.س',
+                          style: const TextStyle(
+                              color: Color(0xff4C8613),
+                              fontSize: 15,
+                              fontFamily: 'Tajawal'),
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('المجموع'),
-                        Text(CartBloc.cartInfo!.total_price_with_vat.toString())
+                        const Text(
+                          'المجموع',
+                          style: TextStyle(
+                              color: Color(0xff4C8613),
+                              fontSize: 15,
+                              fontFamily: 'Tajawal'),
+                        ),
+                        Text(
+                          '${CartBloc.cartInfo!.total_price_with_vat}ر.س',
+                          style: const TextStyle(
+                              color: Color(0xff4C8613),
+                              fontSize: 15,
+                              fontFamily: 'Tajawal'),
+                        )
                       ],
                     ),
                   ],
@@ -276,6 +339,55 @@ class CompleteRequest extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class Trial extends StatefulWidget {
+  const Trial({super.key});
+
+  @override
+  State<Trial> createState() => _TrialState();
+}
+
+class _TrialState extends State<Trial> {
+  List count = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Trial'),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          const Text('Multi Counter'),
+          ListView.builder(
+              itemCount: count.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          count[index]++;
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.add)),
+                    Text(count[index].toString()),
+                    IconButton(
+                        onPressed: () {
+                          count[index]--;
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.remove)),
+                  ],
+                );
+              })
+        ],
+      ),
     );
   }
 }
