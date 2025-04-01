@@ -1,16 +1,26 @@
-# salla_thumara
+# thimar
 
 A new Flutter project.
 
-## Getting Started
+## 📖 Description  
+-Developed a commercial app for browsing and purchasing fresh fruits and vegetables with an integrated shopping
+cart and order tracking.
+-Integrated REST APIs for product listings and order management, enhancing performance using BLOC for state
+management.
+-Implemented Google Maps for delivery location tracking and Cached Network Image for faster loading and reduced
+data usage.
 
-This project is a starting point for a Flutter application.
+## 🛠️ Tech Stack  
+- **Flutter** – Cross-platform framework  
+- **Dart** – Programming language  
+- **MVVM** – For scalable and maintainable code  
+- **BLOC** – State management
+- **Google Maps** – For embeding Google Maps in your applications
+- **Geolocator** –  to get the user's current location, track location updates, and calculate distances  
+- **Dio** – Making network requests
+- **image_picker** – Select an image from Camera or Gellary
+- **Shared Preferences** – Save data localy
+- **Shimmer** – show a loading placeholder while data is being fetched  
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🎬 Demo  
+[📹 Watch the demo]([https://drive.google.com/file/d/1UuiPxPwAOezyeVJ-z8TkQ9v6gdDXurKa/view?usp=drive_link](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link))
