@@ -22,5 +22,5 @@ data usage.
 - **Shared Preferences** – Save data localy
 - **Shimmer** – show a loading placeholder while data is being fetched  
 
-## 🎬 Demo  
-[![شاهد الفيديو](https://lh3.googleusercontent.com/d/1XQZf-f_FdE07svBfTsD5Am2K_afl6RiA=w1000)](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link)
+## 🎬 Demo 
+[![Watch the Demo](https://drive.google.com/thumbnail?id=1XQZf-f_FdE07svBfTsD5Am2K_afl6RiA)](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link)
