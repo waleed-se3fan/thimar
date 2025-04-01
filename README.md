@@ -22,8 +22,8 @@ data usage.
 - **Shared Preferences** – Save data localy
 - **Shimmer** – show a loading placeholder while data is being fetched
 
-  ## image
-![Preview](thimar.jpg)
+## image
+<img src="thimar.jpg" alt="Preview" width="300"/>
 
 ## 🎬 Demo    
 [📹 Watch the demo](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link)
