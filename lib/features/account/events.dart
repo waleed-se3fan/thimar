@@ -44,3 +44,9 @@ class ChargeWalletEvent extends AccountEvent {
 class ChangeImageEvent extends AccountEvent {}
 
 class GetPolicyEvent extends AccountEvent {}
+
+class PaymopEventEvent extends AccountEvent {
+  String amount;
+  BuildContext context;
+  PaymopEventEvent(this.amount, this.context);
+}

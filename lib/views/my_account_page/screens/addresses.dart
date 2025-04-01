@@ -43,7 +43,7 @@ class AddressesScreen extends StatelessWidget {
                     : null;
                 return state is EmptyAddressesState
                     ? const Center(
-                        child: Text('Empty list'),
+                        child: Text('لايوجد عناوين مسجلة لديك'),
                       )
                     : state is LoadingGetAllAddressesState
                         ? const Center(
@@ -55,7 +55,7 @@ class AddressesScreen extends StatelessWidget {
                               )
                             : AddressesBloc.myAddresses!.isEmpty
                                 ? const Center(
-                                    child: Text('Empty list'),
+                                    child: Text('لايوجد عناوين مسجلة لديك'),
                                   )
                                 : SizedBox(
                                     height:

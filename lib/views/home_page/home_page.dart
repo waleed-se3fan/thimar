@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
             return Container(
               padding: EdgeInsets.all(15.r),
               child: Column(
+                key: const Key('homePage'),
                 children: [
                   const CustomTextFormField(),
                   state is SuccessSearchState

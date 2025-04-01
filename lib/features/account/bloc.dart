@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:salla_thumara/data/freq_quistion.dart';
 import 'package:salla_thumara/data/wallet.dart';
 import 'package:salla_thumara/features/login/bloc.dart';
+import 'package:salla_thumara/views/my_account_page/screens/paymob.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'events.dart';
@@ -26,6 +27,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<ChargeWalletEvent>(chargeWallet);
     on<ChangeImageEvent>(changeImage);
     on<GetPolicyEvent>(getPolicy);
+    on<PaymopEventEvent>(paymop);
   }
   final userNameController = TextEditingController(text: LoginBloc.fullName);
   final phoneController = TextEditingController(text: LoginBloc.phone);
@@ -180,25 +182,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     }
   }
 
-  static final amountController = TextEditingController();
-  chargeWallet(ChargeWalletEvent event, Emitter<AccountState> emit) async {
-    emit(LoadingChargeWalletState());
-    try {
-      var response = await Dio()
-          .post('https://thimar.amr.aait-d.com/public/api/wallet/charge',
-              data: {'transaction_id': '1111', 'amount': event.amount},
-              options: Options(
-                  headers: {'Authorization': 'Bearer ${LoginBloc.token}'}))
-          .then((value) {
-        add(GetWalletEvent());
-      });
-
-      emit(SuccessChargeWalletState(response.data['message']));
-    } on DioException catch (e) {
-      emit(FailChargetState(e.response!.data['message']));
-    }
-  }
-
   static XFile? image;
 
   changeImage(ChangeImageEvent event, Emitter<AccountState> emit) async {
@@ -219,6 +202,50 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     } on DioException catch (e) {
       e.error;
       emit(FailPolicyState());
+    }
+  }
+
+  static final amountController = TextEditingController();
+  chargeWallet(ChargeWalletEvent event, Emitter<AccountState> emit) async {
+    emit(LoadingChargeWalletState());
+    try {
+      var response = await Dio()
+          .post('https://thimar.amr.aait-d.com/public/api/wallet/charge',
+              data: {'transaction_id': '1111', 'amount': event.amount},
+              options: Options(
+                  headers: {'Authorization': 'Bearer ${LoginBloc.token}'}))
+          .then((value) {
+        add(GetWalletEvent());
+      });
+
+      emit(SuccessChargeWalletState(response.data['message']));
+    } on DioException catch (e) {
+      emit(FailChargetState(e.response!.data['message']));
+    }
+  }
+
+  paymop(PaymopEventEvent event, Emitter<AccountState> emit) async {
+    emit(LoadingPaymopState());
+    try {
+      final authToken = await PaymobService.getAuthToken();
+      final orderId = await PaymobService.createOrder(
+          authToken, int.parse(event.amount) * 100);
+      final paymentKey = await PaymobService.getPaymentKey(
+          authToken, orderId, int.parse(event.amount) * 100);
+      String paymentUrl =
+          "https://accept.paymob.com/api/acceptance/iframes/905872?payment_token=$paymentKey";
+      // ignore: use_build_context_synchronously
+      Navigator.push(event.context, MaterialPageRoute(builder: (c) {
+        return PaymentWebView(
+          paymentUrl: paymentUrl,
+        );
+      }));
+      chargeWallet(ChargeWalletEvent(event.amount), emit);
+      //
+
+      emit(SuccessChargeWalletState('تمت عملية الدفع بنجاح'));
+    } on DioException catch (e) {
+      e.error;
     }
   }
 }

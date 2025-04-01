@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,6 +63,7 @@ class CustomAnimatedImagesState extends State<CustomAnimatedImages> {
               alignment: Alignment.bottomCenter,
               children: [
                 PageView.builder(
+                    key: const Key('pageView'),
                     onPageChanged: (value) {
                       x = value;
                       setState(() {});
@@ -74,9 +76,9 @@ class CustomAnimatedImagesState extends State<CustomAnimatedImages> {
                       return state is SuccesLoadingImages
                           ? Container(
                               padding: EdgeInsets.only(top: 25.h),
-                              child: Image.network(
-                                state.images![i].image,
+                              child: CachedNetworkImage(
                                 fit: BoxFit.fill,
+                                imageUrl: '${state.images![i].image}',
                               ),
                             )
                           : const AnimatedImagesShimmer();

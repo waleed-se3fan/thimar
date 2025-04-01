@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -144,10 +145,10 @@ class CurrentOrder extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             5)),
-                                                child: Image.network(
-                                                  state.orders[i]
-                                                      .products[index].url,
+                                                child: CachedNetworkImage(
                                                   fit: BoxFit.fill,
+                                                  imageUrl: state.orders[i]
+                                                      .products[index].url,
                                                 ),
                                               );
                                             }),
@@ -261,10 +262,10 @@ class FinishedOrder extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             5)),
-                                                child: Image.network(
-                                                  state.orders[i]
-                                                      .products[index].url,
+                                                child: CachedNetworkImage(
                                                   fit: BoxFit.fill,
+                                                  imageUrl: state.orders[i]
+                                                      .products[index].url,
                                                 ),
                                               );
                                             }),
@@ -386,9 +387,9 @@ class OrderDetails extends StatelessWidget {
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5)),
-                              child: Image.network(
-                                order[index].products[ind].url,
+                              child: CachedNetworkImage(
                                 fit: BoxFit.fill,
+                                imageUrl: order[index].products[ind].url,
                               ),
                             );
                           }),

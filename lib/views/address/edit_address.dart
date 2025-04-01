@@ -80,6 +80,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                 builder: (context, state) {
                                   if (state is SuccessGetEditLocation) {
                                     return GoogleMap(
+                                        key: const ValueKey('map'),
+                                        liteModeEnabled: true,
                                         onTap: (value) {
                                           context.read<GoogleMapBloc>().add(
                                               GetEditLocationEvent(
@@ -101,6 +103,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                                     return const Center(child: Text('Fail'));
                                   } else {
                                     return GoogleMap(
+                                        key: const ValueKey('map'),
+                                        liteModeEnabled: true,
                                         onTap: (value) {
                                           context.read<GoogleMapBloc>().add(
                                               GetEditLocationEvent(

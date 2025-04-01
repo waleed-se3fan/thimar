@@ -94,3 +94,10 @@ class FailPolicyState extends AccountState {}
 class LoadingEditPasswordState extends AccountState {}
 
 class SuccessEditPasswordState extends AccountState {}
+
+class LoadingPaymopState extends AccountState {}
+
+class SuccessPaymopState extends AccountState {
+  String message;
+  SuccessPaymopState(this.message);
+}

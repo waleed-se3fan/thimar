@@ -35,6 +35,8 @@ class AddAddressScreen extends StatelessWidget {
                           return ClipRRect(
                               borderRadius: BorderRadius.circular(35),
                               child: GoogleMap(
+                                  key: const ValueKey('map'),
+                                  liteModeEnabled: true,
                                   onTap: (value) {
                                     context.read<GoogleMapBloc>().add(
                                         GetLocationEvent(
@@ -54,6 +56,8 @@ class AddAddressScreen extends StatelessWidget {
                           return ClipRRect(
                               borderRadius: BorderRadius.circular(35),
                               child: GoogleMap(
+                                  key: const ValueKey('map'),
+                                  liteModeEnabled: true,
                                   onTap: (value) {
                                     context.read<GoogleMapBloc>().add(
                                         GetLocationEvent(
