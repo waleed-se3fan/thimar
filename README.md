@@ -23,4 +23,4 @@ data usage.
 - **Shimmer** – show a loading placeholder while data is being fetched  
 
 ## 🎬 Demo  
-[📹 Watch the demo]([https://drive.google.com/file/d/1UuiPxPwAOezyeVJ-z8TkQ9v6gdDXurKa/view?usp=drive_link](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link))
+[![شاهد الفيديو](https://via.placeholder.com/600x300?text=اضغط+لمشاهدة+الفيديو)](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link)
