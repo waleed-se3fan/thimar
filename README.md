@@ -23,7 +23,7 @@ data usage.
 - **Shimmer** – show a loading placeholder while data is being fetched
 
 ## 📸 Illustrative Image  
-<img src="thimar.jpg" alt="Illustrative Image" width="180" height="230"/>
+<img src="thimar.jpg" alt="Illustrative Image" width="150" height="250"/>
 
 ## 🎬 Demo    
 [📹 Watch the demo](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link)
