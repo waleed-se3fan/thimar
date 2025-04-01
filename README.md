@@ -20,7 +20,10 @@ data usage.
 - **Dio** – Making network requests
 - **image_picker** – Select an image from Camera or Gellary
 - **Shared Preferences** – Save data localy
-- **Shimmer** – show a loading placeholder while data is being fetched  
+- **Shimmer** – show a loading placeholder while data is being fetched
+
+  ## image
+![Preview](thimar.jpg)
 
 ## 🎬 Demo    
 [📹 Watch the demo](https://drive.google.com/file/d/1XKOMNZRfXqZfyTDsE1vK9FapfwJqQc-r/view?usp=drive_link)
